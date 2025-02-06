@@ -10,7 +10,7 @@ class HttpClientAdapter implements HttpClientInterface
     private string $apiKey;
 
     public function __construct(){
-        $this->apiBaseUri = env('API_FOOTBALL_BASE_URI', 'https://v3.football.api-sports.io/');
+        $this->apiBaseUri = env('API_FOOTBALL_BASE_URI', 'https://api.football-data.org/v4/');
         $this->apiKey = env('API_FOOTBALL_KEY');
     }
 
