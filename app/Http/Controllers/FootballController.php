@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Adapters\HttpClientInterface;
+use Illuminate\Http\Request;
 
 class FootballController extends Controller
 {
@@ -13,39 +14,24 @@ class FootballController extends Controller
         $this->httpClient = $httpClient;
     }
 
-    public function teste()
-    {
-        $response = $this->httpClient->get('competitions/2016/matches?status=SCHEDULED');
-        dd($response['matches']);
-    }
-
-    public function getUpcomingMatches($competitionId)
-    {
-        $response = $this->httpClient->get("competitions/{$competitionId}/matches?status=SCHEDULED");
-        return $response['matches'];
-    }
-
-    public function getRecentResults($competitionId)
-    {
-        $response = $this->httpClient->get("competitions/{$competitionId}/matches?status=FINISHED");
-        return $response['matches'];
-    }
-
-    public function searchTeamMatches($teamId)
-    {
-        $response = $this->httpClient->get("teams/{$teamId}/matches");
-        return $response['matches'];
-    }
-
+    // Lista todas as competições
     public function getCompetitions()
     {
         $response = $this->httpClient->get('competitions');
-        return $response['competitions'];
+        dd($response);
     }
 
-    public function getScheduledMatches($competitionId)
+    // Lista os próximos jogos de uma competição
+    public function getUpcomingMatches($competitionId)
     {
-        $response = $this->httpClient->get("competitions/{$competitionId}/matches?status=SCHEDULED");
+        $response = $this->httpClient->get("competitions/{$competitionId}/matches", [
+            'status' => 'SCHEDULED',
+        ]);
+
+        if (empty($response['matches'])) {
+            return response()->json(['error' => 'Nenhuma partida encontrada.'], 404);
+        }
+
         $matches = $response['matches'];
         $formattedMatches = [];
 
@@ -58,36 +44,88 @@ class FootballController extends Controller
             ];
         }
 
-        return $formattedMatches;
+        $perPage = 50;
+        $page = request()->get('page', 1);
+        $offset = ($page - 1) * $perPage;
+        $paginatedMatches = array_slice($formattedMatches, $offset, $perPage);
+
+        return response()->json([
+            'data' => $paginatedMatches,
+            'total' => count($formattedMatches),
+            'per_page' => $perPage,
+            'current_page' => $page,
+            'last_page' => ceil(count($formattedMatches) / $perPage),
+        ]);
     }
 
-    public function getLastResults($competitionId)
+    // Lista os últimos resultados de uma competição
+    public function getLastMatches($competitionId)
     {
-        $response = $this->httpClient->get("competitions/{$competitionId}/matches?status=FINISHED");
+        $response = $this->httpClient->get("competitions/{$competitionId}/matches", [
+            'status' => 'FINISHED',
+        ]);
+
+        if (empty($response['matches'])) {
+            return response()->json(['error' => 'Nenhum resultado encontrado.'], 404);
+        }
+
         $matches = $response['matches'];
         $formattedResults = [];
 
         foreach ($matches as $match) {
+            $score = $match['score'];
+
             $formattedResults[] = [
                 'homeTeam' => $match['homeTeam']['name'],
                 'awayTeam' => $match['awayTeam']['name'],
-                'score' => "{$match['score']['fullTime']['homeTeam']}x{$match['score']['fullTime']['awayTeam']}"
+                'date' => $match['utcDate'],
+                'score' => "{$score['fullTime']['home']}x{$score['fullTime']['away']}"
             ];
         }
 
-        return $formattedResults;
+        return response()->json($formattedResults);
     }
 
-    public function searchTeam($teamName)
+
+    public function getTeams(Request $request)
     {
-        $response = $this->httpClient->get("teams?name={$teamName}");
-        return $response['teams'];
+        $limit = $request->get('limit', 50);
+        $offset = $request->get('offset', 0);
+
+        $response = $this->httpClient->get('teams', [
+            'limit' => $limit,
+            'offset' => $offset
+        ]);
+
+        if (empty($response['teams'])) {
+            return response()->json(['error' => 'Nenhum time encontrado.'], 404);
+        }
+
+        return response()->json($response['teams']);
+    }
+
+    public function getTeam($teamId)
+    {
+        $response = $this->httpClient->get("teams/{$teamId}");
+
+        if (empty($response['name'])) {
+            return response()->json(['error' => 'Time não encontrado.'], 404);
+        }
+
+        return $response;
     }
 
     public function getTeamMatches($teamId)
     {
-        $response = $this->httpClient->get("teams/{$teamId}/matches");
+        $response = $this->httpClient->get("teams/{$teamId}/matches", [
+            'status' => 'SCHEDULED',
+        ]);
         $matches = $response['matches'];
+
+        if (empty($matches)) {
+            return response()->json(['error' => 'Nenhuma partida encontrada.'], 404);
+        }
+
         $formattedMatches = [];
 
         foreach ($matches as $match) {
@@ -95,7 +133,33 @@ class FootballController extends Controller
                 'homeTeam' => $match['homeTeam']['name'],
                 'awayTeam' => $match['awayTeam']['name'],
                 'date' => $match['utcDate'],
-                'score' => "{$match['score']['fullTime']['homeTeam']}x{$match['score']['fullTime']['awayTeam']}"
+            ];
+        }
+
+        return $formattedMatches;
+    }
+
+
+    public function getTeamLastMatches($teamId)
+    {
+        $response = $this->httpClient->get("teams/{$teamId}/matches", [
+            'status' => 'FINISHED',
+        ]);
+
+        $matches = $response['matches'];
+
+        if (empty($matches)) {
+            return response()->json(['error' => 'Nenhuma partida encontrada.'], 404);
+        }
+
+        $formattedMatches = [];
+
+        foreach ($matches as $match) {
+            $formattedMatches[] = [
+                'homeTeam' => $match['homeTeam']['name'],
+                'awayTeam' => $match['awayTeam']['name'],
+                'date' => $match['utcDate'],
+                'score' => "{$match['score']['fullTime']['home']}x{$match['score']['fullTime']['away']}"
             ];
         }
 
