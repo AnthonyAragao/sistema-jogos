@@ -3,87 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Http\Adapters\HttpClientInterface;
+use App\Http\Services\FootballService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class FootballController extends Controller
 {
     private HttpClientInterface $httpClient;
 
-    public function __construct(HttpClientInterface $httpClient)
-    {
+    public function __construct(
+        private FootballService $footballService,
+        HttpClientInterface $httpClient
+    ){
         $this->httpClient = $httpClient;
     }
 
-    // Lista todas as competições
     public function getCompetitions()
     {
-        $response = $this->httpClient->get('competitions');
-        dd($response);
+        return Inertia::render('Competitions/CompetitionsList', [
+            'competitions' => $this->footballService->getCompetitions()
+        ]);
     }
 
-    // Lista os próximos jogos de uma competição
     public function getUpcomingMatches($competitionId)
     {
-        $response = $this->httpClient->get("competitions/{$competitionId}/matches", [
-            'status' => 'SCHEDULED',
-        ]);
+        $matches = $this->footballService->getMatchesByStatus($competitionId, 'SCHEDULED');
 
-        if (empty($response['matches'])) {
+        if (empty($matches)) {
             return response()->json(['error' => 'Nenhuma partida encontrada.'], 404);
         }
 
-        $matches = $response['matches'];
-        $formattedMatches = [];
-
-        foreach ($matches as $match) {
-            $formattedMatches[] = [
-                'homeTeam' => $match['homeTeam']['name'],
-                'awayTeam' => $match['awayTeam']['name'],
-                'date' => $match['utcDate'],
-                'stadium' => $match['venue'] ?? 'N/A'
-            ];
-        }
-
-        $perPage = 50;
-        $page = request()->get('page', 1);
-        $offset = ($page - 1) * $perPage;
-        $paginatedMatches = array_slice($formattedMatches, $offset, $perPage);
-
-        return response()->json([
-            'data' => $paginatedMatches,
-            'total' => count($formattedMatches),
-            'per_page' => $perPage,
-            'current_page' => $page,
-            'last_page' => ceil(count($formattedMatches) / $perPage),
+        return Inertia::render('Competitions/UpcomingMatches', [
+            'competition' => $this->footballService->extractCompetitionInfo($matches),
+            'matches' =>  $this->footballService->paginate($this->footballService->formatMatches($matches))
         ]);
     }
 
-    // Lista os últimos resultados de uma competição
+
     public function getLastMatches($competitionId)
     {
-        $response = $this->httpClient->get("competitions/{$competitionId}/matches", [
-            'status' => 'FINISHED',
-        ]);
+        $matches = $this->footballService->getMatchesByStatus($competitionId, 'FINISHED');
 
-        if (empty($response['matches'])) {
+        if (empty($matches)) {
             return response()->json(['error' => 'Nenhum resultado encontrado.'], 404);
         }
 
-        $matches = $response['matches'];
-        $formattedResults = [];
-
-        foreach ($matches as $match) {
-            $score = $match['score'];
-
-            $formattedResults[] = [
-                'homeTeam' => $match['homeTeam']['name'],
-                'awayTeam' => $match['awayTeam']['name'],
-                'date' => $match['utcDate'],
-                'score' => "{$score['fullTime']['home']}x{$score['fullTime']['away']}"
-            ];
-        }
-
-        return response()->json($formattedResults);
+        return Inertia::render('Competitions/LastMatches', [
+            'competition' => $this->footballService->extractCompetitionInfo($matches),
+            'matches' => $this->footballService->paginate($this->footballService->formatMatchResults($matches))
+        ]);
     }
 
 
