@@ -27,7 +27,6 @@
                 />
             </div>
 
-
             <div class="divide-y divide-gray-500 text-white px-8 mt-8">
                 <MatchCard
                     v-for="match in matches.data"

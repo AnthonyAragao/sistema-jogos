@@ -35,12 +35,9 @@
                     </button>
                 </div>
 
-                <div
-                    v-if="teams.length === 0"
-                    class="text-center text-white"
-                >
+                <p v-if="teams.length === 0" class="text-center text-white">
                     Nenhum time encontrado
-                </div>
+                </p>
 
                 <div
                     v-else

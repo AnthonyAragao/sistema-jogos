@@ -4,7 +4,10 @@
     import MatchCard from "../../Components/Cards/MatchCard.vue";
 
     const { matches, competition ,lastMatches} = defineProps(["matches", "competition", "lastMatches"]);
-    console.log(competition.value)
+    const items = [
+        { name: 'upcoming', label: 'Jogos programados', href: `/competitions/${competition.id}/upcoming-matches` },
+        { name: 'last', label: 'Últimos resultados', href: `/competitions/${competition.id}/last-matches` }
+    ];
 </script>
 
 <template>
@@ -32,11 +35,7 @@
             class="container max-w-5xl mx-auto py-4 rounded-md bg-secondary mt-4"
         >
             <Navigation
-                :items="[
-                    { name: 'upcoming', label: 'Jogos programados', href: `/competitions/${competition.id}/upcoming-matches` },
-                    { name: 'last', label: 'Últimos resultados', href: `/competitions/${competition.id}/last-matches` }
-                ]"
-
+                :items="items"
                 :active="lastMatches ? 'last' : 'upcoming'"
             />
 
