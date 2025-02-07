@@ -95,9 +95,15 @@ class FootballService
     }
 
     // --------------------------------------teams methods--------------------------------------
-    public function getTeams()
+    public function getTeams($request)
     {
-        return $this->httpClient->get('teams')['teams'] ?? [];
+        $teams = $this->httpClient->get('teams')['teams'] ?? [];
+
+        if ($request) {
+            $teams = array_filter($teams, fn($team) => str_contains(strtolower($team['name']), strtolower($request)));
+        }
+
+        return $teams;
     }
 
     public function getTeam($teamId)

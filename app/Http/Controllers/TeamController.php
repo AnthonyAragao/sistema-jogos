@@ -16,7 +16,7 @@ class TeamController extends Controller
     public function getTeams(Request $request)
     {
         return Inertia::render('Teams/TeamsList', [
-            'teams' => $this->footballService->getTeams()
+            'teams' => $this->footballService->getTeams($request->query('search'))
         ]);
     }
 

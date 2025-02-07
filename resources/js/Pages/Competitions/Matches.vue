@@ -4,11 +4,16 @@
     import MatchCard from "../../Components/Cards/MatchCard.vue";
 
     const { matches, competition ,lastMatches} = defineProps(["matches", "competition", "lastMatches"]);
+    console.log(competition.value)
 </script>
 
 <template>
     <Layout>
-        <div class="flex items-center gap-2">
+        <div v-if="competition.id == null">
+            <p class="text-center text-white mt-4">Nenhuma competição encontrada</p>
+        </div>
+
+        <div v-else class="flex items-center gap-2">
             <img
                 :src="competition.emblem"
                 :alt="competition.name"
@@ -17,7 +22,10 @@
             <h2 class="text-gray-200 text-2xl font-semibold"> {{ competition.name }} </h2>
         </div>
 
-        <div class="container max-w-5xl mx-auto py-4 rounded-md bg-secondary mt-4">
+        <div
+            v-if="matches.data.length !== 0"
+            class="container max-w-5xl mx-auto py-4 rounded-md bg-secondary mt-4"
+        >
             <Navigation
                 :items="[
                     { name: 'upcoming', label: 'Jogos programados', href: `/competitions/${competition.id}/upcoming-matches` },
