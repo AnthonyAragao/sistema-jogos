@@ -30,7 +30,6 @@ class FootballService
         return $response['matches'] ?? [];
     }
 
-
     public function extractCompetitionInfo(array $matches)
     {
         return [
@@ -93,5 +92,25 @@ class FootballService
             'current_page' => $page,
             'last_page' => ceil(count($items) / $this->perPage),
         ];
+    }
+
+    // --------------------------------------teams methods--------------------------------------
+    public function getTeams()
+    {
+        return $this->httpClient->get('teams')['teams'] ?? [];
+    }
+
+    public function getTeam($teamId)
+    {
+        return $this->httpClient->get("teams/{$teamId}");
+    }
+
+    public function getTeamMatches($teamId, $status)
+    {
+        $response = $this->httpClient->get("teams/{$teamId}/matches", [
+            'status' => $status,
+        ]);
+
+        return $response['matches'] ?? [];
     }
 }

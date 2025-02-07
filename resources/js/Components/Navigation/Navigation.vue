@@ -1,5 +1,4 @@
 <script setup>
-    import { defineProps } from 'vue';
     import { Link } from '@inertiajs/vue3';
 
     const { competition, active } = defineProps(['competition', 'active']);
@@ -14,7 +13,7 @@
                     'bg-[#C80037]': active === 'upcoming',
                     'bg-[#0F2D37]': active !== 'upcoming'
                 }"
-                class="font-semibold text-sm text-white uppercase px-4 py-2 rounded-lg"
+                class="font-semibold text-sm text-white uppercase px-4 py-2 rounded-lg cursor-pointer"
             >
                 Jogos programados
             </Link>
@@ -25,7 +24,7 @@
                     'bg-[#C80037]': active === 'last',
                     'bg-[#0F2D37]': active !== 'last'
                 }"
-                class="font-semibold text-sm text-white uppercase px-4 py-2 rounded-lg"
+                class="font-semibold text-sm text-white uppercase px-4 py-2 rounded-lg cursor-pointer"
             >
                 Últimos resultados
             </Link>

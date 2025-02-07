@@ -15,7 +15,7 @@
                 href="/competitions"
                 class="font-semibold text-sm text-white uppercase"
                 :class="{
-                    'relative after:content-[\'\'] after:absolute after:left-0 after:right-0 after:-bottom-[25px] after:h-1 after:bg-[#C80037] after:rounded-t-lg': isActive('/competitions')
+                    'relative after:content-[\'\'] after:absolute after:left-0 after:right-0 after:-bottom-[25px] after:h-1 after:bg-primary after:rounded-t-lg': isActive('/competitions')
                 }"
             >
 
@@ -26,7 +26,7 @@
                 href="/teams"
                 class="font-semibold text-sm text-white uppercase"
                 :class="{
-                    'relative after:content-[\'\'] after:absolute after:left-0 after:right-0 after:-bottom-[25px] after:h-1 after:bg-[#C80037] after:rounded-t-lg': isActive('/teams')
+                    'relative after:content-[\'\'] after:absolute after:left-0 after:right-0 after:-bottom-[25px] after:h-1 after:bg-primary after:rounded-t-lg': isActive('/teams')
                 }"
             >
                 <i class="fas fa-users"></i> Times
