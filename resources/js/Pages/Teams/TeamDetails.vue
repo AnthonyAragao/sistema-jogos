@@ -37,7 +37,6 @@
             </div>
         </div>
 
-
         <h2 class="text-2xl font-semibold text-white mt-16">Jogadores</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">

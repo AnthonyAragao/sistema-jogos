@@ -44,6 +44,9 @@
             <p class="text-zinc-200">
                 <i class="fas fa-info-circle"></i> {{ match.info.status }}
             </p>
+            <p class="text-zinc-200">
+                <i class="fas fa-map-marker-alt"></i> {{ match.info.venue }}
+            </p>
         </div>
     </div>
 </template>
