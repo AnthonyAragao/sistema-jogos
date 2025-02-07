@@ -41,9 +41,10 @@ class TeamController extends Controller
     {
         $matches = $this->footballService->getTeamMatches($teamId, 'FINISHED');
 
-        return Inertia::render('Teams/TeamLastMatches', [
+        return Inertia::render('Teams/TeamMatches', [
             'team' => $this->footballService->getTeam($teamId),
-            'matches' => $this->footballService->paginate($this->footballService->formatMatchResults($matches))
+            'matches' => $this->footballService->paginate($this->footballService->formatMatchResults($matches)),
+            'lastMatches' => true
         ]);
     }
 }

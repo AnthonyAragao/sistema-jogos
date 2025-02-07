@@ -3,7 +3,7 @@
     import Navigation from "../../Components/Navigation/Navigation.vue";
     import MatchCard from "../../Components/Cards/MatchCard.vue";
 
-    const { matches, competition } = defineProps(["matches", "competition"]);
+    const { matches, competition ,lastMatches} = defineProps(["matches", "competition", "lastMatches"]);
 </script>
 
 <template>
@@ -19,8 +19,12 @@
 
         <div class="container max-w-5xl mx-auto py-4 rounded-md bg-secondary mt-4">
             <Navigation
-                :competition="competition"
-                active="last"
+                :items="[
+                    { name: 'upcoming', label: 'Jogos programados', href: `/competitions/${competition.id}/upcoming-matches` },
+                    { name: 'last', label: 'Últimos resultados', href: `/competitions/${competition.id}/last-matches` }
+                ]"
+
+                :active="lastMatches ? 'last' : 'upcoming'"
             />
 
             <main class="divide-y divide-gray-500 text-white px-8">

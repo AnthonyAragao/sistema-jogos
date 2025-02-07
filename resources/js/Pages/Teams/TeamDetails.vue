@@ -5,10 +5,6 @@
 
 <template>
     <Layout>
-        <h1 class="text-2xl font-semibold text-white">
-            Informações do time
-        </h1>
-
         <div class="grid grid-cols-2 items-center">
             <div class="flex items-center gap-4 mt-8">
                 <img :src="team.crest" :alt="team.name" class="size-28">
@@ -42,11 +38,9 @@
         </div>
 
 
+        <h2 class="text-2xl font-semibold text-white mt-16">Jogadores</h2>
 
-        <!-- Jogadores -->
-        <h2 class="text-2xl font-semibold text-white my-8">Jogadores</h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             <div
                 v-for="player in team.squad"
                 :key="player.id"
@@ -57,8 +51,5 @@
                 </p>
             </div>
         </div>
-
-
-
     </Layout>
 </template>

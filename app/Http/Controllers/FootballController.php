@@ -22,7 +22,7 @@ class FootballController extends Controller
     {
         $matches = $this->footballService->getMatchesByStatus($competitionId, 'SCHEDULED');
 
-        return Inertia::render('Competitions/UpcomingMatches', [
+        return Inertia::render('Competitions/Matches', [
             'competition' => $this->footballService->extractCompetitionInfo($matches),
             'matches' =>  $this->footballService->paginate($this->footballService->formatMatches($matches))
         ]);
@@ -32,9 +32,10 @@ class FootballController extends Controller
     {
         $matches = $this->footballService->getMatchesByStatus($competitionId, 'FINISHED');
 
-        return Inertia::render('Competitions/LastMatches', [
+        return Inertia::render('Competitions/Matches', [
             'competition' => $this->footballService->extractCompetitionInfo($matches),
-            'matches' => $this->footballService->paginate($this->footballService->formatMatchResults($matches))
+            'matches' => $this->footballService->paginate($this->footballService->formatMatchResults($matches)),
+            'lastMatches' => true
         ]);
     }
 }
