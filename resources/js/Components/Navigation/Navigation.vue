@@ -10,14 +10,22 @@
         <ul class="flex space-x-4">
             <Link
                 :href="`/competitions/${competition.id}/upcoming-matches`"
-                :class="{'bg-[#C80037]': active === 'upcoming'}" class="font-semibold text-sm text-white uppercase px-4 py-2 rounded-lg"
+                :class="{
+                    'bg-[#C80037]': active === 'upcoming',
+                    'bg-[#0F2D37]': active !== 'upcoming'
+                }"
+                class="font-semibold text-sm text-white uppercase px-4 py-2 rounded-lg"
             >
                 Jogos programados
             </Link>
 
             <Link
                 :href="`/competitions/${competition.id}/last-matches`"
-                :class="{'bg-[#C80037]': active === 'last'}" class="font-semibold text-sm text-white uppercase px-4 py-2 rounded-lg"
+                :class="{
+                    'bg-[#C80037]': active === 'last',
+                    'bg-[#0F2D37]': active !== 'last'
+                }"
+                class="font-semibold text-sm text-white uppercase px-4 py-2 rounded-lg"
             >
                 Últimos resultados
             </Link>
