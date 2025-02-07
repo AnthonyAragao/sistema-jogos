@@ -1,8 +1,8 @@
 <script setup>
-import { defineProps } from "vue";
-import { Link } from "@inertiajs/vue3";
+    import { defineProps } from "vue";
+    import { Link } from "@inertiajs/vue3";
 
-const { competition } = defineProps(["competition"]);
+    const { competition } = defineProps(["competition"]);
 </script>
 
 <template>

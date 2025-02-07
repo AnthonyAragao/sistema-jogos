@@ -1,5 +1,5 @@
 <script setup>
-    import DefaultLayout from "../Layouts/DefaultLayout.vue";
+    import Layout from "../Layouts/Layout.vue";
     import Navigation from "../../Components/Navigation/Navigation.vue";
     import MatchCard from "../../Components/Cards/MatchCard.vue";
 
@@ -7,7 +7,7 @@
 </script>
 
 <template>
-    <DefaultLayout>
+    <Layout>
         <div class="flex items-center gap-2">
             <img :src="competition.emblem" :alt="competition.name" class="size-12">
             <h2 class="text-gray-200 text-2xl font-semibold"> {{ competition.name }} </h2>
@@ -29,5 +29,5 @@
                 </div>
             </main>
         </div>
-    </DefaultLayout>
+    </Layout>
 </template>

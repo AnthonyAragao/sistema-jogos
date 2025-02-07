@@ -1,13 +1,13 @@
 <script setup>
-    import DefaultLayoutVue from "../Layouts/DefaultLayout.vue";
+    import Layout from "../Layouts/Layout.vue";
     import Navigation from "../../Components/Navigation/Navigation.vue";
-    import MatchCard from "../../Components/Cards/MatchCard.vue";   
+    import MatchCard from "../../Components/Cards/MatchCard.vue";
 
     const { matches, competition } = defineProps(["matches", "competition"]);
 </script>
 
 <template>
-    <DefaultLayoutVue>
+    <Layout>
         <div class="flex items-center gap-2">
             <img
                 :src="competition.emblem"
@@ -31,5 +31,5 @@
                 />
             </main>
         </div>
-    </DefaultLayoutVue>
+    </Layout>
 </template>
