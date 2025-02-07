@@ -8,10 +8,12 @@
 </script>
 
 <template>
+    <Head :title="`Detalhes do time ${team.name}`" />
+
     <Layout>
         <div class="grid grid-cols-2 items-center">
             <TeamInfo :team="team" />
-            <TeamActions :team="team" />
+            <TeamActions :teamId="team.id" />
         </div>
 
         <TeamSquad :squad="team.squad" />

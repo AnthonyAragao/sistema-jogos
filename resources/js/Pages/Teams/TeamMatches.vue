@@ -7,6 +7,11 @@
 </script>
 
 <template>
+    <Head
+        title="Partidas"
+        meta="Veja as próximas partidas e os últimos resultados do time"
+    />
+
    <Layout>
         <main>
             <div class="flex flex-col justify-center items-center gap-4 mt-8">

@@ -8,6 +8,11 @@
 </script>
 
 <template>
+    <Head
+        title="Partidas"
+        meta="Veja as próximas partidas e os últimos resultados da competição"
+    />
+
     <Layout>
         <div v-if="competition.id == null">
             <p class="text-center text-white mt-4">Nenhuma competição encontrada</p>

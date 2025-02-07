@@ -15,6 +15,8 @@
 </script>
 
 <template>
+    <Head title="Times" />
+
     <Layout>
         <div class="container max-w-5xl mx-auto py-4 bg-secondary rounded-md">
             <main class="px-8">
